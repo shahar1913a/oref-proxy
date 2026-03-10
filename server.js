@@ -128,13 +128,23 @@ const server = http.createServer(async (req, res) => {
       lastAlertId,
       serverTime: new Date().toISOString(),
     });
+  }
+
   // GET /test-alert - simulate alert for testing
   if (url.pathname === "/test-alert") {
-    lastAlert = { id: "test-" + Date.now(), cat: "1", title: "ירי רקטות", data: ["תל אביב", "רמת גן"] };
-    lastAlertActive = true;
-    setTimeout(() => { lastAlertActive = false; }, 10000);
-    return respond(res, 200, { ok: true, message: ss"התרעת ניסיון השרת של שחר " });
-  }
+    // create a fake alert entry and add to history
+    const fake = {
+      id: "test-" + Date.now(),
+      cat: "1",
+      title: "ירי רקטות",
+      data: ["תל אביב", "רמת גן"],
+      receivedAt: new Date().toISOString(),
+    };
+    lastAlertId = fake.id;
+    alertHistory.unshift(fake);
+    if (alertHistory.length > 50) alertHistory.pop();
+
+    return respond(res, 200, { ok: true, message: "התרעת ניסיון השרת של שחר" });
   }
 
 
