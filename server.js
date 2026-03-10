@@ -133,7 +133,7 @@ const server = http.createServer(async (req, res) => {
     lastAlert = { id: "test-" + Date.now(), cat: "1", title: "ירי רקטות", data: ["תל אביב", "רמת גן"] };
     lastAlertActive = true;
     setTimeout(() => { lastAlertActive = false; }, 10000);
-    return respond(res, 200, { ok: true, message: "התרעת ניסיון השרת של שחר " });
+    return respond(res, 200, { ok: true, message: ss"התרעת ניסיון השרת של שחר " });
   }
   }
 
