@@ -141,7 +141,7 @@ const server = http.createServer(async (req, res) => {
       receivedAt: new Date().toISOString(),
     };
     lastAlertId = fake.id;
-    alertHistory.unshift(fake);
+    alertHistory.unshift(fake); //
     if (alertHistory.length > 50) alertHistory.pop();
 
     return respond(res, 200, { ok: true, message: "התרעת ניסיון השרת של שחר" });
