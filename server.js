@@ -1,4 +1,9 @@
-const http = require("http");
+const admin = require('firebase-admin');
+const serviceAccount = require('./firebase-key.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 const https = require("https");
 
 const PORT = 3000;
@@ -58,6 +63,20 @@ async function pollAlerts() {
 
     if (result.data && result.data.id && result.data.id !== lastAlertId) {
       lastAlertId = result.data.id;
+      const areas = (result.data.data || []).join(', ');
+await admin.messaging().sendToTopic('alerts', {
+  notification: {
+    title: '🚨 צבע אדום!',
+    body: areas,
+  },
+  android: {
+    priority: 'high',
+    notification: {
+      sound: 'default',
+      priority: 'max',
+    },
+  },
+});
       const entry = {
         ...result.data,
         receivedAt: new Date().toISOString(),
