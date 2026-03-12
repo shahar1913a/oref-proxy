@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>צבע אדום</title>
+  <style>
+    body { background: #0a0a0f; color: white; font-family: Arial; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; text-align: center; }
+    h1 { color: #e74c3c; font-size: 2rem; }
+    #status { font-size: 1.5rem; margin: 20px; }
+    #sub { color: #555; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>🚨 צבע אדום</h1>
+    <div id="status">מתחבר...</div>
+    <div id="sub">מחובר לפיקוד העורף בזמן אמת</div>
+  </div>
+  <script>
+    const URL = 'https://oref-proxy-production.up.railway.app/alerts';
+    let lastId = '';
+    setInterval(async () => {
+      try {
+        const res = await fetch(URL);
+        const data = await res.json();
+        if (data.active && data.alert) {
+          document.getElementById('status').textContent = '🚨 ' + (data.alert.data || []).join(', ');
+        } else {
+          document.getElementById('status').textContent = '✅ אין התרעות';
+        }
+      } catch(e) {
+        document.getElementById('status').textContent = '❌ שגיאת חיבור';
+      }
+    }, 2000);
+  </script>
+</body>
+</html>
